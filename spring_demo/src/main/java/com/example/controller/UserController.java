@@ -7,13 +7,10 @@ package com.example.controller;
 
 import com.example.modelo.User;
 import com.example.service.UserServiceI;
-import com.example.util.QueryResult;
 import com.example.util.RestResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,9 +46,25 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userServiceI.findAll();
     }
+
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    public RestResponse deleteUser(@RequestBody String userJson) {
+        try {
+            mapper = new ObjectMapper();
+            User user = mapper.readValue(userJson, User.class);
+            if (user.getId()==null){
+                return new RestResponse(HttpStatus.NOT_ACCEPTABLE.value(),"Id de usuario esta nulo");
+            }
+            userServiceI.delete(user.getId());
+            return new RestResponse(HttpStatus.OK.value(), "Eliminacion Exitosa");
+        } catch (IOException ex) {
+            return new RestResponse(HttpStatus.NOT_ACCEPTABLE.value(), ex.getMessage());
+        }
+    }
+
     private boolean userValidator(User user) {
         boolean isValid = true;
         if (user.getFirstName().isEmpty()) {

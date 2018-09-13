@@ -17,5 +17,7 @@ public interface UserServiceI {
     public User save(User user);
 
     public List<User> findAll();
+
+    public void delete(Long id);
     
 }
