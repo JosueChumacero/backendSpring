@@ -6,6 +6,7 @@
 package com.example.service;
 
 import com.example.modelo.User;
+import java.util.List;
 
 /**
  *
@@ -14,5 +15,7 @@ import com.example.modelo.User;
 public interface UserServiceI {
 
     public User save(User user);
+
+    public List<User> findAll();
     
 }

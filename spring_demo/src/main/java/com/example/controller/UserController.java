@@ -7,9 +7,11 @@ package com.example.controller;
 
 import com.example.modelo.User;
 import com.example.service.UserServiceI;
+import com.example.util.QueryResult;
 import com.example.util.RestResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,10 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
+    public List<User> getUsers(){
+        return userServiceI.findAll();
+    }
     private boolean userValidator(User user) {
         boolean isValid = true;
         if (user.getFirstName().isEmpty()) {
